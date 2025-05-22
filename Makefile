@@ -1,6 +1,7 @@
 # Makefile for testing-tricks Python project
 
-.PHONY: help install test coverage pre-commit clean lint format
+.PHONY: help test coverage pre-commit clean lint format
+PRE_COMMIT_ARGS := --hook-stage=manual --all-files --show-diff-on-failure --color=always
 
 help:
 	@echo "Available targets:"
@@ -9,31 +10,32 @@ help:
 	@echo "  format      Run all pre-commit formatting hooks"
 	@echo "  test        Run pytest tests"
 	@echo "  coverage    Run pytest with coverage report"
+	@echo "  pre-commit  Run pre-commit hook 'prettier' on all files"
 	@echo "  pre-commit  Run all pre-commit hooks on all files"
 	@echo "  clean       Remove Python cache and build artifacts"
 
-install:
-	uv venv .venv
-	uv run pip install pre-commit
+install: uv.lock .git/hooks/pre-commit .pre-commit-config.yaml
+	uv sync
 	uv run pre-commit install
+	touch install
 
-lint:
-	uv run pre-commit run --hook-stage=manual --all-files --show-diff-on-failure --color=always --hook-type=pre-commit
+lint: install
+	uv run pre-commit run ${PRE_COMMIT_ARGS} ruff-check
 
-format:
-	uv run pre-commit run --hook-stage=manual --all-files --show-diff-on-failure --color=always --hook-type=pre-commit
+format: install
+	uv run pre-commit run ${PRE_COMMIT_ARGS} ruff-format
 
-test:
+test: install
 	uv run pytest
 
-coverage:
+coverage: install
 	uv run pytest --cov=.
 
-pre-commit:
-	uv run pre-commit run --all-files
+prettier: install
+	uv run pre-commit run ${PRE_COMMIT_ARGS} prettier --all-files
+
+pre-commit: install
+	uv run pre-commit run ${PRE_COMMIT_ARGS} --all-files
 
 clean:
-	git clean -xfd
-	git clean -Xfd
-	find . -type d -name '__pycache__' -exec rm -rf {} +
-	find . -type f -name '*.pyc' -delete
+	git clean -dfx -e .venv
