@@ -11,5 +11,12 @@ wheels/
 
 # tool-generated files
 .coverage
+htmlcov/
 install
 node_modules/
+format
+install
+lint
+pre-commit
+prettier
+test
