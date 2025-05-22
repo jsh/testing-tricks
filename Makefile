@@ -10,7 +10,7 @@ help:
 	@echo "  format      Run all pre-commit formatting hooks"
 	@echo "  test        Run pytest tests"
 	@echo "  coverage    Run pytest with coverage report"
-	@echo "  pre-commit  Run pre-commit hook 'prettier' on all files"
+	@echo "  prettier    Run pre-commit hook 'prettier' on all files"
 	@echo "  pre-commit  Run all pre-commit hooks on all files"
 	@echo "  clean       Remove Python cache and build artifacts"
 
