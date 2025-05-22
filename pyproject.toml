@@ -12,3 +12,14 @@ dependencies = [
     "pytest-cov>=6.1.1",
     "ruff>=0.11.10",
 ]
+[tool.pytest.ini_options]
+addopts = """
+    --cov=.
+    --cov-report term-missing
+    --cov-report html:htmlcov
+"""
+[tool.coverage.run]
+omit = [
+    "__init__.py",
+    "tests/*",
+]
