@@ -12,9 +12,12 @@ help:
 	@echo "  lint        Run all pre-commit lint hooks"
 	@echo "  format      Run all pre-commit formatting hooks"
 	@echo "  test        Run pytest tests, including coverage report"
+	@echo "  mutmut      Run mutation tests"
 	@echo "  prettier    Run pre-commit hook 'prettier' on all files"
 	@echo "  pre-commit  Run all pre-commit hooks on all files"
 	@echo "  clean       Remove Python cache and build artifacts"
+
+.PHONY: all clean
 
 all: pre-commit
 
@@ -36,7 +39,11 @@ test: format
 	uv run pytest
 	touch test
 
-prettier: test
+mutmut: test
+	uv run mutmut run
+	touch mutmut
+
+prettier: mutmut
 	uv run pre-commit run ${PRE_COMMIT_ARGS} prettier --all-files
 	touch prettier
 

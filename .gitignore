@@ -17,6 +17,8 @@ node_modules/
 format
 install
 lint
+mutants/
+mutmut
 pre-commit
 prettier
 test
