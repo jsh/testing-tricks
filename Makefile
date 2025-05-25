@@ -13,7 +13,6 @@ help:
 	@echo "  format      Run all pre-commit formatting hooks"
 	@echo "  test        Run pytest tests, including coverage report"
 	@echo "  mutmut      Run mutation tests"
-	@echo "  prettier    Run pre-commit hook 'prettier' on all files"
 	@echo "  pre-commit  Run all pre-commit hooks on all files"
 	@echo "  clean       Remove Python cache and build artifacts"
 
@@ -39,17 +38,13 @@ test: format
 	uv run pytest
 	touch test
 
+pre-commit: test
+	uv run pre-commit run ${PRE_COMMIT_ARGS} --all-files
+	touch pre-commit
+
 mutmut: test
 	uv run mutmut run
 	touch mutmut
-
-prettier: mutmut
-	uv run pre-commit run ${PRE_COMMIT_ARGS} prettier --all-files
-	touch prettier
-
-pre-commit: prettier
-	uv run pre-commit run ${PRE_COMMIT_ARGS} --all-files
-	touch pre-commit
 
 clean:
 	git clean -dfx -e .venv
