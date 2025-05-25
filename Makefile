@@ -28,6 +28,7 @@ lint: install ${PYTHON_SOURCE}
 	touch lint
 
 format: lint
+	git add .
 	uv run pre-commit run ${PRE_COMMIT_ARGS} ruff-format
 	touch format
 
